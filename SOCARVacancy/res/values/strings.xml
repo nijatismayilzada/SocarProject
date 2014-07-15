@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SOCAR Vacancy</string>
+    <string name="action_settings">Settings</string>
+    <string name="username_textview">Username</string>
+    <string name="password_textview">Password</string>
+    <string name="username_textfield">admin</string>
+    <string name="password_textfield">******</string>
+    <string name="login_button">Log in</string>
+
+</resources>
