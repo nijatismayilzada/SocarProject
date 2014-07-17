@@ -1,5 +1,8 @@
 package com.socar.socarvacancy;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -10,6 +13,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.*;
 import org.ksoap2.transport.HttpTransportSE;
@@ -35,7 +41,7 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				//Calling Asynctask method for webservice request
+				//Calling Asynctask method for web service request
 				new GetJson().execute();
 			}
 		});//click listener
@@ -89,7 +95,7 @@ public class MainActivity extends Activity {
 
 			//Background execution
 			String response = null;
-
+            ArrayList<String> name = new ArrayList<String>();
 			//request details
 			//standard java ksoap library
 			SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE,
@@ -104,10 +110,17 @@ public class MainActivity extends Activity {
 				httpTransport.call(TRANSPORT_CALL, envelope);
 				//Get response
 				response = envelope.getResponse().toString();
+				//parsing JSONArray
+				JSONArray array = new JSONArray(response);
+				for (int i = 0; i < array.length(); i++) {
+				   JSONObject row = array.getJSONObject(i);
+				   name.add(row.getString("name"));
+				}
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			return response;
+			return name.get(0) + " " + name.get(1);
 		}//doInBackground
 	}//GetJson
 
