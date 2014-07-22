@@ -8,6 +8,7 @@ using System.Web.Script.Serialization;
 using System.Data.SqlClient;
 using System.Data;
 using Newtonsoft.Json;
+using System.Xml;   
 
 namespace WebService1
 {
@@ -56,18 +57,24 @@ namespace WebService1
 
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
-        public string getLoginPassword(String LoginNameUser, String passwordUser)
+        public string getLoginPassword(XmlDocument LoginNameUser, XmlDocument passwordUser)
         {
             string json = null;
             try
             {
                 DataTable dt = new DataTable();
-                string str = "SELECT count(id) as SuccessResult FROM Login WHERE LoginName = N'" + LoginNameUser + "' and Password = N'" + passwordUser + "'";
+
+                String a = LoginNameUser.OuterXml;
+                String b = passwordUser.OuterXml;
+
+                string str = "SELECT count(id) as SuccessResult FROM Login WHERE LoginName = N'" + a + "' and Password = N'" + b + "'";
                 SqlDataAdapter da = new SqlDataAdapter(str, con);
+
+
        
                 da.Fill(dt);
                 json = JsonConvert.SerializeObject(dt);
-                  }
+            }
             catch (Exception e)
             {
             }

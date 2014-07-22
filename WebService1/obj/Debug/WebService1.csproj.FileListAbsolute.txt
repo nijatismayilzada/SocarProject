@@ -34,3 +34,8 @@ C:\Users\Nijat\Desktop\WebService1\bin\WebService1.pdb
 C:\Users\Nijat\Desktop\WebService1\obj\Debug\WebService1.csprojResolveAssemblyReference.cache
 C:\Users\Nijat\Desktop\WebService1\obj\Debug\WebService1.dll
 C:\Users\Nijat\Desktop\WebService1\obj\Debug\WebService1.pdb
+C:\Users\Kamil\Documents\GitHub\socarProject\WebService1\obj\Debug\WebService1.csprojResolveAssemblyReference.cache
+C:\Users\Kamil\Documents\GitHub\socarProject\WebService1\obj\Debug\WebService1.dll
+C:\Users\Kamil\Documents\GitHub\socarProject\WebService1\obj\Debug\WebService1.pdb
+C:\Users\Kamil\Documents\GitHub\socarProject\WebService1\bin\WebService1.dll
+C:\Users\Kamil\Documents\GitHub\socarProject\WebService1\bin\WebService1.pdb
