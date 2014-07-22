@@ -1,6 +1,9 @@
 package com.socar.socarvacancy;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -11,17 +14,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
 	ProgressDialog pDialog;
 	Button loginButton;
+	EditText loginName;
+	EditText password;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		loginName = (EditText) findViewById(R.id.usernameEditText);
+		password = (EditText) findViewById(R.id.passwordEditText);
+		
 		loginButton = (Button) findViewById(R.id.loginButton);
 		loginButton.setOnClickListener(new OnClickListener() {
 
@@ -29,7 +38,19 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 		        //Calling Aysnctask method for web service request
 				//arguments: activity, method, context
-				new AsyncTaskWS(MainActivity.this, "GetVacancy",getApplicationContext()).execute();;
+//			try {
+//				ArrayList<String> arrayList =	
+				new AsyncTaskWS(MainActivity.this, "getLoginPassword",getApplicationContext(),	loginName.getText().toString(), password.getText().toString()).execute();
+//				String str = (String)arrayList.get(0);
+//				if (str=="1")
+//				{
+//					Toast.makeText(getBaseContext(), "Logged in", Toast.LENGTH_LONG).show();
+//				}
+//			} catch (InterruptedException | ExecutionException
+//					| TimeoutException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 			}
 //          ArrayList array1 = new AsyncTaskWSS().execute().get(3000, TimeUnit.MILLISECONDS);
 		});//click listener
