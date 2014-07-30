@@ -14,7 +14,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 /**
  * This class configures connection to the database, gets required method name,
  * parses JSONArray and returns ArrayList.
@@ -26,7 +25,7 @@ import android.widget.Toast;
 public class AsyncTaskWS extends AsyncTask<String, String, ArrayList<String>>{
 
 	//connection strings
-	private static final String WSDL_TARGET_NAMESPACE = "http://tempuri.org/";
+	private static final String WSDL_TARGET_NAMESPACE = "Vac/";
 	private static final String TRANSPORT_CALL = "Vac/";
 	private static final String SOAP_ADDRESS = "http://10.23.14.94/VacancyAndroid/Service1.asmx";
 	
@@ -73,14 +72,14 @@ public class AsyncTaskWS extends AsyncTask<String, String, ArrayList<String>>{
 		pDialog.dismiss();
 	    
 		//to prevent NullPointerException(which causes crash of program)
-		if(result == null){
-		  Toast.makeText(context, "Undefined error occured...", Toast.LENGTH_LONG)
-			.show();
-		}
-		else{
-         Toast.makeText(context, result.get(0), Toast.LENGTH_LONG)
-				.show();
-		}
+//		if(result == null){
+//		  Toast.makeText(context, "Undefined error occured...", Toast.LENGTH_LONG)
+//			.show();
+//		}
+//		else{
+//         Toast.makeText(context, result.get(0), Toast.LENGTH_LONG)
+//				.show();
+//		}
 	}
 	
 	@Override
