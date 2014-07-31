@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 
+	DatabaseHandler db = new DatabaseHandler(this);
 	ProgressDialog pDialog;
 	Button loginButton;
 	EditText loginName;
@@ -41,6 +42,7 @@ public class LoginActivity extends Activity {
 				try {
 					String loginOK = newTask.get().get(0).toString();
 					if (loginOK.equals("1")) {
+						db.updateLogin(new Login(0, loginOK));
 						Intent theIntent = new Intent(getApplication(),
 								MainActivity.class);
 						startActivity(theIntent);
