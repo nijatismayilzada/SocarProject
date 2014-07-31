@@ -2,7 +2,6 @@ package com.socar.socarvacancy;
 
 import android.app.Activity;
 import android.content.Intent;
-//import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,12 +18,14 @@ public class MainActivity extends Activity {
 		if (db.getLogin(0).getNumber().toString().equals("0")) {
 			Intent theIntent = new Intent(getApplication(), LoginActivity.class);
 			startActivity(theIntent);
+			finish();
 		}
 		}
 		catch(Exception e){
 			db.addLogin(new Login(0,"0"));
 			Intent theIntent = new Intent(getApplication(), LoginActivity.class);
 			startActivity(theIntent);
+			finish();
 		}
 		
 	}//onCreate

@@ -9,9 +9,9 @@
     <string name="password_textfield">******</string>
     <string name="login_button">Log in</string>
     <string name="title_activity_login">SOCAR Vacancy</string>
-    <string name="title_activity_loginn">LoginnActivity</string>
 
     
     <string name="vacancy_title">Vacancies</string>
+    <string name="logout">Logout</string>
 
 </resources>

@@ -31,7 +31,7 @@ public class AsyncTaskWS extends AsyncTask<String, String, ArrayList<Map<String,
 	private static final String WSDL_TARGET_NAMESPACE = "Vac/";
 	private static final String TRANSPORT_CALL = "Vac/";
 	private static final String SOAP_ADDRESS = "http://10.23.14.94/VacancyAndroid/Service1.asmx";
-	
+
 	private Activity activity;
 	private String method;
 	private String value1;
@@ -40,7 +40,7 @@ public class AsyncTaskWS extends AsyncTask<String, String, ArrayList<Map<String,
 	ProgressDialog pDialog;
 	private PropertyInfo pi2;
 	Context context;
-	
+
 	//constructor 
 	public AsyncTaskWS(Activity activity, String method, Context context) {
 		this.activity = activity;		
@@ -54,40 +54,40 @@ public class AsyncTaskWS extends AsyncTask<String, String, ArrayList<Map<String,
 		this.value1 = value1;
 		this.value2 = value2;
 	}
-	
+
 	@Override
 	protected void onPreExecute() {
 		//Firstly, preExecute starts working
 		super.onPreExecute();
 		//Set up progress dialog during accessing details
 		//Loading
-	    pDialog = new ProgressDialog(activity);
+		pDialog = new ProgressDialog(activity);
 		pDialog.setMessage("Loading...");
 		pDialog.setIndeterminate(false);
 		pDialog.setCancelable(false);
 		pDialog.show();
 	}
-	
+
 	@Override
 	protected void onPostExecute(ArrayList<Map<String, String>> result) {
 		//After execution, dismiss dialog and toast the JSON
 		super.onPostExecute(result);
 		pDialog.dismiss();
-	    
+
 		//to prevent NullPointerException(which causes crash of program)
 		if(result == null){
-		  Toast.makeText(context, "Undefined error occured...", Toast.LENGTH_LONG)
+			Toast.makeText(context, "Undefined error occured...", Toast.LENGTH_LONG)
 			.show();
 		}
-//		else{
-//         Toast.makeText(context, result.get(0), Toast.LENGTH_LONG)
-//				.show();
-//		}
+		//		else{
+		//         Toast.makeText(context, result.get(0), Toast.LENGTH_LONG)
+		//				.show();
+		//		}
 	}
-	
+
 	@Override
 	protected ArrayList<Map<String, String>> doInBackground(String... params) {
-        //String vacancyId= params[0];		
+		//String vacancyId= params[0];		
 		//Background execution
 		String response = null;
 
@@ -95,12 +95,12 @@ public class AsyncTaskWS extends AsyncTask<String, String, ArrayList<Map<String,
 		if(method == "getVacancyList")
 		{
 			ArrayList<Map<String, String>> vacancyList = new ArrayList<Map<String, String>>();
-			
+
 			//request details
 			//standard java ksoap2 library
 			SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE,
 					method);
-			
+
 			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 					SoapEnvelope.VER11);
 			envelope.dotNet = true;
@@ -115,15 +115,15 @@ public class AsyncTaskWS extends AsyncTask<String, String, ArrayList<Map<String,
 				//parsing JSONArray
 				JSONArray array = new JSONArray(response);
 				for (int i = 0; i < array.length(); i++) {
-				  JSONObject row = array.getJSONObject(i);
-				  vacancy.put("ID", row.getString("ID"));
-				  vacancy.put("name", row.getString("name"));
-				  vacancyList.add(vacancy);
+					JSONObject row = array.getJSONObject(i);
+					vacancy.put("ID", row.getString("ID"));
+					vacancy.put("name", row.getString("name"));
+					vacancyList.add(vacancy);
 				}//for
-        	} catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
-     		}//catch
-    			return vacancyList;	
+			}//catch
+			return vacancyList;	
 		}
 		else if(method == "getLoginPassword")
 		{
@@ -132,20 +132,20 @@ public class AsyncTaskWS extends AsyncTask<String, String, ArrayList<Map<String,
 			//standard java ksoap2 library
 			SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE,
 					method);
-			 pi1 = new PropertyInfo();
-			
-			 pi1.setName("LoginNameUser");
-			 pi1.setValue(value1);
-			 pi1.setType(String.class);
-			 request.addProperty(pi1);
-			
+			pi1 = new PropertyInfo();
 
-			 pi2 = new PropertyInfo();
-			 pi2.setName("passwordUser");
-			 pi2.setValue(value2);
-			 pi2.setType(String.class);
-			 request.addProperty(pi2);
-			
+			pi1.setName("LoginNameUser");
+			pi1.setValue(value1);
+			pi1.setType(String.class);
+			request.addProperty(pi1);
+
+
+			pi2 = new PropertyInfo();
+			pi2.setName("passwordUser");
+			pi2.setValue(value2);
+			pi2.setType(String.class);
+			request.addProperty(pi2);
+
 			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 					SoapEnvelope.VER11);
 			envelope.dotNet = true;
@@ -156,21 +156,139 @@ public class AsyncTaskWS extends AsyncTask<String, String, ArrayList<Map<String,
 				httpTransport.call(TRANSPORT_CALL + method, envelope);
 				//Get response
 				response = envelope.getResponse().toString();
-				
+
 				Map<String, String> login = new HashMap<String, String>();
-				
+
 				//parsing JSONArray
 				JSONArray array = new JSONArray(response);
 				for (int i = 0; i < array.length(); i++) {
-				  JSONObject row = array.getJSONObject(i);
-				  login.put("SuccessResult", row.getString("SuccessResult"));
-				  loginInfo.add(login);
+					JSONObject row = array.getJSONObject(i);
+					login.put("SuccessResult", row.getString("SuccessResult"));
+					loginInfo.add(login);
 				}//for
-        	} catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
-     		}//catch
-    			return loginInfo;	
+			}//catch
+			return loginInfo;	
 		}
+
+		else if(method == "getApplicantStatus")
+		{
+			//request details
+			//standard java ksoap2 library
+			SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE,
+					method);
+
+			ArrayList<Map<String, String>> applicantStatusList = new ArrayList<Map<String, String>>();
+			pi1 = new PropertyInfo();
+
+			pi1.setName("applicantID");
+			pi1.setValue(value1);
+			pi1.setType(String.class);
+			request.addProperty(pi1);
+
+			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
+					SoapEnvelope.VER11);
+			envelope.dotNet = true;
+			envelope.setOutputSoapObject(request);
+			HttpTransportSE httpTransport = new HttpTransportSE(SOAP_ADDRESS);
+			try {
+				//Send request
+				httpTransport.call(TRANSPORT_CALL + method, envelope);
+				//Get response
+				response = envelope.getResponse().toString();
+
+				Map<String, String> applicantStatusMap = new HashMap<String, String>();
+
+				//parsing JSONArray
+				JSONArray array = new JSONArray(response);
+				for (int i = 0; i < array.length(); i++) {
+					JSONObject row = array.getJSONObject(i);
+					applicantStatusMap.put("name", row.getString("NAME"));
+					applicantStatusMap.put("status", row.getString("status"));
+					
+					applicantStatusList.add(applicantStatusMap);
+				}//for
+			} catch (Exception e) {
+				e.printStackTrace();
+			}//catch
+			return applicantStatusList;	
+		}
+		
+		else if(method == "getApplicants")
+		{
+			//request details
+			//standard java ksoap2 library
+			SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE,
+					method);
+
+			ArrayList<Map<String, String>> getApplicantsList = new ArrayList<Map<String, String>>();
+			pi1 = new PropertyInfo();
+
+			pi1.setName("vacancyID");
+			pi1.setValue(value1);
+			pi1.setType(String.class);
+			request.addProperty(pi1);
+
+			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
+					SoapEnvelope.VER11);
+			envelope.dotNet = true;
+			envelope.setOutputSoapObject(request);
+			HttpTransportSE httpTransport = new HttpTransportSE(SOAP_ADDRESS);
+			try {
+				//Send request
+				httpTransport.call(TRANSPORT_CALL + method, envelope);
+				//Get response
+				response = envelope.getResponse().toString();
+
+				Map<String, String> getApplicantsMap = new HashMap<String, String>();
+
+				//parsing JSONArray
+				JSONArray array = new JSONArray(response);
+				for (int i = 0; i < array.length(); i++) {
+					JSONObject row = array.getJSONObject(i);
+					getApplicantsMap.put("id", row.getString("ID"));
+					getApplicantsMap.put("name", row.getString("NAME"));
+					getApplicantsMap.put("surname", row.getString("SURNAME"));
+					getApplicantsMap.put("faname", row.getString("FANAME"));
+					getApplicantsMap.put("birthday", row.getString("BIRTHDAY"));
+					getApplicantsMap.put("birthplace", row.getString("BIRTHPLACE"));
+					getApplicantsMap.put("citizenshipID", row.getString("CITIZENSHIPID"));
+					getApplicantsMap.put("sex", row.getString("SEX"));
+					getApplicantsMap.put("maritalStatus", row.getString("MARITALSTATUS"));
+					getApplicantsMap.put("idNumber", row.getString("IDENTITYCARDNUMBER"));
+					getApplicantsMap.put("actualCityID", row.getString("ACTUALCITYID"));
+					getApplicantsMap.put("actualVilID", row.getString("ACTUALVILID"));
+					getApplicantsMap.put("actualStr", row.getString("ACTUALSTR"));
+					getApplicantsMap.put("regCityID", row.getString("REGCITYID"));
+					getApplicantsMap.put("regVilID", row.getString("REGVILID"));
+					getApplicantsMap.put("regStr", row.getString("REGSTR"));
+					getApplicantsMap.put("setem", row.getString("SETEM"));
+					getApplicantsMap.put("email", row.getString("EMAIL"));
+					getApplicantsMap.put("mobOper", row.getString("MOBOPER"));
+					getApplicantsMap.put("mob", row.getString("MOB"));
+					getApplicantsMap.put("tel", row.getString("TEL"));
+					getApplicantsMap.put("military", row.getString("MILITARY"));
+					getApplicantsMap.put("nightWork", row.getString("NIGHTWORK"));
+					getApplicantsMap.put("seaWork", row.getString("SEAWORK"));
+					getApplicantsMap.put("vacCompanyID", row.getString("VACCOMPANYID"));
+					getApplicantsMap.put("vacDepID", row.getString("VACDEPID"));
+					getApplicantsMap.put("vacInfID", row.getString("VACINFID"));
+					getApplicantsMap.put("interv", row.getString("INTERV"));
+					getApplicantsMap.put("scholarship", row.getString("SCHOLARSHIP"));
+					getApplicantsMap.put("paidInternship", row.getString("PAIDINTERNSHIP"));
+					getApplicantsMap.put("appDate", row.getString("APPDATE"));
+					getApplicantsMap.put("vacStatusID", row.getString("Vac_Status_ID"));
+					getApplicantsMap.put("drivingLicence", row.getString("driving_licence"));
+										
+					getApplicantsList.add(getApplicantsMap);
+				}//for
+			} catch (Exception e) {
+				e.printStackTrace();
+			}//catch
+			return getApplicantsList;	
+		}
+
 		return null;
 	}//doInBackground
 }//class AsyncTaskWS
