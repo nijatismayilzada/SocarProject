@@ -15,7 +15,14 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		DatabaseHandler db = new DatabaseHandler(this);
+		try{
 		if (db.getLogin(0).getNumber().toString().equals("0")) {
+			Intent theIntent = new Intent(getApplication(), LoginActivity.class);
+			startActivity(theIntent);
+		}
+		}
+		catch(Exception e){
+			db.addLogin(new Login(0,"0"));
 			Intent theIntent = new Intent(getApplication(), LoginActivity.class);
 			startActivity(theIntent);
 		}

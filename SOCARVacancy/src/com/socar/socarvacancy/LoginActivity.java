@@ -1,6 +1,5 @@
 package com.socar.socarvacancy;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -49,6 +48,7 @@ public class LoginActivity extends Activity {
 						Intent theIntent = new Intent(getApplication(),
 								MainActivity.class);
 						startActivity(theIntent);
+						finish();
 					} else {
 						Toast.makeText(getBaseContext(),
 								"Name or password is incorrect",
