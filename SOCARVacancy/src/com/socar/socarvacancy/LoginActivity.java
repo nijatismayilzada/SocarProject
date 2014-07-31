@@ -1,5 +1,7 @@
 package com.socar.socarvacancy;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
@@ -39,7 +41,8 @@ public class LoginActivity extends Activity {
 								.toString());
 				newTask.execute();
 				try {
-					String loginOK = newTask.get().get(0).toString();
+					Map<String, String> login = newTask.get().get(0);					
+					String loginOK = login.get("SuccessResult");
 					if (loginOK.equals("1")) {
 						Intent theIntent = new Intent(getApplication(),
 								MainActivity.class);

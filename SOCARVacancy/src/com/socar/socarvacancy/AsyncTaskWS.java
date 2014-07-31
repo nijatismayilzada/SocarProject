@@ -1,6 +1,8 @@
 package com.socar.socarvacancy;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,6 +16,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 /**
  * This class configures connection to the database, gets required method name,
  * parses JSONArray and returns ArrayList.
@@ -22,7 +25,7 @@ import android.os.AsyncTask;
  * AsyncTaskWS(Activity activity, String method, Context context)
  * 
  **/
-public class AsyncTaskWS extends AsyncTask<String, String, ArrayList<String>>{
+public class AsyncTaskWS extends AsyncTask<String, String, ArrayList<Map<String, String>>>{
 
 	//connection strings
 	private static final String WSDL_TARGET_NAMESPACE = "Vac/";
@@ -66,16 +69,16 @@ public class AsyncTaskWS extends AsyncTask<String, String, ArrayList<String>>{
 	}
 	
 	@Override
-	protected void onPostExecute(ArrayList<String> result) {
+	protected void onPostExecute(ArrayList<Map<String, String>> result) {
 		//After execution, dismiss dialog and toast the JSON
 		super.onPostExecute(result);
 		pDialog.dismiss();
 	    
 		//to prevent NullPointerException(which causes crash of program)
-//		if(result == null){
-//		  Toast.makeText(context, "Undefined error occured...", Toast.LENGTH_LONG)
-//			.show();
-//		}
+		if(result == null){
+		  Toast.makeText(context, "Undefined error occured...", Toast.LENGTH_LONG)
+			.show();
+		}
 //		else{
 //         Toast.makeText(context, result.get(0), Toast.LENGTH_LONG)
 //				.show();
@@ -83,7 +86,7 @@ public class AsyncTaskWS extends AsyncTask<String, String, ArrayList<String>>{
 	}
 	
 	@Override
-	protected ArrayList<String> doInBackground(String... params) {
+	protected ArrayList<Map<String, String>> doInBackground(String... params) {
         //String vacancyId= params[0];		
 		//Background execution
 		String response = null;
@@ -91,7 +94,8 @@ public class AsyncTaskWS extends AsyncTask<String, String, ArrayList<String>>{
 		//check which method to run
 		if(method == "getVacancyList")
 		{
-			ArrayList<String> name = new ArrayList<String>();
+			ArrayList<Map<String, String>> vacancyList = new ArrayList<Map<String, String>>();
+			
 			//request details
 			//standard java ksoap2 library
 			SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE,
@@ -106,21 +110,24 @@ public class AsyncTaskWS extends AsyncTask<String, String, ArrayList<String>>{
 				//Send request
 				httpTransport.call(TRANSPORT_CALL + method, envelope);
 				//Get response
-				response = envelope.getResponse().toString();
+				response = envelope.getResponse().toString();				
+				Map<String, String> vacancy = new HashMap<String, String>();
 				//parsing JSONArray
 				JSONArray array = new JSONArray(response);
 				for (int i = 0; i < array.length(); i++) {
 				  JSONObject row = array.getJSONObject(i);
-				  name.add(row.getString("name"));
+				  vacancy.put("ID", row.getString("ID"));
+				  vacancy.put("name", row.getString("name"));
+				  vacancyList.add(vacancy);
 				}//for
         	} catch (Exception e) {
 				e.printStackTrace();
      		}//catch
-    			return name;	
+    			return vacancyList;	
 		}
 		else if(method == "getLoginPassword")
 		{
-			ArrayList<String> name = new ArrayList<String>();
+			ArrayList<Map<String, String>> loginInfo = new ArrayList<Map<String, String>>();
 			//request details
 			//standard java ksoap2 library
 			SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE,
@@ -149,16 +156,20 @@ public class AsyncTaskWS extends AsyncTask<String, String, ArrayList<String>>{
 				httpTransport.call(TRANSPORT_CALL + method, envelope);
 				//Get response
 				response = envelope.getResponse().toString();
+				
+				Map<String, String> login = new HashMap<String, String>();
+				
 				//parsing JSONArray
 				JSONArray array = new JSONArray(response);
 				for (int i = 0; i < array.length(); i++) {
 				  JSONObject row = array.getJSONObject(i);
-				  name.add(row.getString("SuccessResult"));
+				  login.put("SuccessResult", row.getString("SuccessResult"));
+				  loginInfo.add(login);
 				}//for
         	} catch (Exception e) {
 				e.printStackTrace();
      		}//catch
-    			return name;	
+    			return loginInfo;	
 		}
 		return null;
 	}//doInBackground
