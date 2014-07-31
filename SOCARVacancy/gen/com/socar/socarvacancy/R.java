@@ -1099,6 +1099,7 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f050023;
         public static final int action_bar_title=0x7f050022;
         public static final int action_context_bar=0x7f05001d;
+        public static final int action_logout=0x7f050046;
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050024;
@@ -1218,9 +1219,7 @@ containing a value of this type.
     }
     public static final class menu {
         public static final int login=0x7f0c0000;
-        public static final int loginn=0x7f0c0001;
-        public static final int main=0x7f0c0002;
-        public static final int vacancy_list=0x7f0c0003;
+        public static final int main=0x7f0c0001;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -1263,24 +1262,13 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f0a000b;
-        public static final int action_forgot_password=0x7f0a001b;
+        public static final int action_logout=0x7f0a0017;
         public static final int action_settings=0x7f0a000e;
-        public static final int action_sign_in_register=0x7f0a0019;
-        public static final int action_sign_in_short=0x7f0a001a;
         public static final int app_name=0x7f0a000d;
-        public static final int error_field_required=0x7f0a0020;
-        public static final int error_incorrect_password=0x7f0a001f;
-        public static final int error_invalid_email=0x7f0a001d;
-        public static final int error_invalid_password=0x7f0a001e;
         public static final int login_button=0x7f0a0013;
-        public static final int login_progress_signing_in=0x7f0a001c;
         public static final int logout=0x7f0a0016;
         public static final int password_textfield=0x7f0a0012;
         public static final int password_textview=0x7f0a0010;
-        /**  Strings related to login 
-         */
-        public static final int prompt_email=0x7f0a0017;
-        public static final int prompt_password=0x7f0a0018;
         public static final int title_activity_login=0x7f0a0014;
         public static final int username_textfield=0x7f0a0011;
         public static final int username_textview=0x7f0a000f;

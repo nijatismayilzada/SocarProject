@@ -18,13 +18,14 @@ import android.widget.Toast;
 public class LoginActivity extends Activity {
 
 	DatabaseHandler db = new DatabaseHandler(this);
-	ProgressDialog pDialog;
 	Button loginButton;
 	EditText loginName;
 	EditText password;
+	ProgressDialog progress;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		loginName = (EditText) findViewById(R.id.usernameEditText);
@@ -35,13 +36,16 @@ public class LoginActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
+
 				AsyncTaskWS newTask = new AsyncTaskWS(LoginActivity.this,
 						"getLoginPassword", getApplicationContext(), loginName
 								.getText().toString(), password.getText()
 								.toString());
+
 				newTask.execute();
+
 				try {
-					Map<String, String> login = newTask.get().get(0);					
+					Map<String, String> login = newTask.get().get(0);
 					String loginOK = login.get("SuccessResult");
 					if (loginOK.equals("1")) {
 						db.updateLogin(new Login(0, loginOK));

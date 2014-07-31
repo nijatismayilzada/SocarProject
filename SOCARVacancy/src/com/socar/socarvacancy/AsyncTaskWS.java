@@ -16,7 +16,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 /**
  * This class configures connection to the database, gets required method name,
  * parses JSONArray and returns ArrayList.
@@ -59,30 +58,13 @@ public class AsyncTaskWS extends AsyncTask<String, String, ArrayList<Map<String,
 	protected void onPreExecute() {
 		//Firstly, preExecute starts working
 		super.onPreExecute();
-		//Set up progress dialog during accessing details
-		//Loading
-		pDialog = new ProgressDialog(activity);
-		pDialog.setMessage("Loading...");
-		pDialog.setIndeterminate(false);
-		pDialog.setCancelable(false);
-		pDialog.show();
+		
 	}
 
 	@Override
 	protected void onPostExecute(ArrayList<Map<String, String>> result) {
 		//After execution, dismiss dialog and toast the JSON
 		super.onPostExecute(result);
-		pDialog.dismiss();
-
-		//to prevent NullPointerException(which causes crash of program)
-		if(result == null){
-			Toast.makeText(context, "Undefined error occured...", Toast.LENGTH_LONG)
-			.show();
-		}
-		//		else{
-		//         Toast.makeText(context, result.get(0), Toast.LENGTH_LONG)
-		//				.show();
-		//		}
 	}
 
 	@Override
