@@ -10,6 +10,8 @@
     <string name="login_button">Log in</string>
     <string name="title_activity_login">SOCAR Vacancy</string>
     <string name="title_activity_loginn">LoginnActivity</string>
-    <string name="hello_world">Hello world!</string>
+
+    
+    <string name="vacancy_title">Vacancies</string>
 
 </resources>
