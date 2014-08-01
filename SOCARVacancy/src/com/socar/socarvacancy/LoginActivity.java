@@ -37,6 +37,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
+				// Run asynctask
 				AsyncTaskWS newTask = new AsyncTaskWS(LoginActivity.this,
 						"getLoginPassword", getApplicationContext(), loginName
 								.getText().toString(), password.getText()
@@ -45,10 +46,14 @@ public class LoginActivity extends Activity {
 				newTask.execute();
 
 				try {
+					// get first row
 					Map<String, String> login = newTask.get().get(0);
+					// get the value whose key is "successresult"
 					String loginOK = login.get("SuccessResult");
+					// if 1, write it to the database
 					if (loginOK.equals("1")) {
 						db.updateLogin(new Login(0, loginOK));
+						// And start main activity
 						Intent theIntent = new Intent(getApplication(),
 								MainActivity.class);
 						startActivity(theIntent);

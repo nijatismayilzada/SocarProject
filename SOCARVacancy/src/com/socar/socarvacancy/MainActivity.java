@@ -21,32 +21,49 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		// Check if the user logged in or not
 		try {
+			// Get first row and the number. If it is equal to 0, it means that
+			// the user didn't login
 			if (db.getLogin(0).getNumber().toString().equals("0")) {
+				// So, start login activity for login again
 				Intent theIntent = new Intent(getApplication(),
 						LoginActivity.class);
 				startActivity(theIntent);
+				// destroy this activity
 				finish();
 			}
+			// if you open the program for the first time, there is no database.
+			// So the exception is thrown and catch clause works
 		} catch (Exception e) {
+			// add row to the database with 0
 			db.addLogin(new Login(0, "0"));
+			// start login activity
 			Intent theIntent = new Intent(getApplication(), LoginActivity.class);
 			startActivity(theIntent);
+			// destroy main activity
 			finish();
 		}
 
+		// Asynctask. Connection between asp.net web services and the machine
 		AsyncTaskWS newTask = new AsyncTaskWS(MainActivity.this,
 				"getVacancyList", getApplicationContext());
 		newTask.execute();
 
 		try {
+			// Get vacancy list from asynctask
 			vacancyList = newTask.get();
+			// the number of vacancies
 			int noOfVacancies = vacancyList.size();
+			// add all vacancies to the database
 			for (int i = 0; i < noOfVacancies; i++) {
+				// Get map from asynctask
 				Map<String, String> vacancy = newTask.get().get(i);
+				// add it to the database
 				db2.addVacancy(new Vacancy(vacancy.get("ID"), vacancy
 						.get("name")));
-			}
+			}// for
+
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -70,6 +87,7 @@ public class MainActivity extends Activity {
 		switch (item.getItemId()) {
 		case R.id.action_settings:
 			return true;
+			// logout
 		case R.id.action_logout:
 			logout();
 			return true;
@@ -78,11 +96,14 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	// logout
 	public void logout() {
+		// update column to 0
 		db.updateLogin(new Login(0, "0"));
+		// start login activity
 		Intent theIntent = new Intent(getApplication(), LoginActivity.class);
 		startActivity(theIntent);
 		finish();
-	}
+	}// logout
 
 }// Main
