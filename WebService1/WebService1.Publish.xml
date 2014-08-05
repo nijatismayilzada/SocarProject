@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <publishData>
   <publishProfile publishUrl="C:\Users\Nijat\Desktop\VacancyAndroid" deleteExistingFiles="True" ftpAnonymousLogin="True" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="True" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
-    <file relUrl="bin/Newtonsoft.Json.dll" publishTime="08/03/2012 19:21:40" />
-    <file relUrl="bin/WebService1.pdb" publishTime="07/21/2014 12:31:27" />
-    <file relUrl="bin/WebService1.dll" publishTime="07/21/2014 12:31:27" />
-    <file relUrl="Service1.asmx" publishTime="08/22/2012 04:27:54" />
-    <file relUrl="Web.config" publishTime="07/21/2014 12:14:14" />
+    <file relUrl="bin/Newtonsoft.Json.dll" publishTime="07/30/2014 10:57:58" />
+    <file relUrl="bin/WebService1.pdb" publishTime="08/05/2014 15:21:57" />
+    <file relUrl="bin/WebService1.dll" publishTime="08/05/2014 15:21:57" />
+    <file relUrl="Service1.asmx" publishTime="07/30/2014 10:57:58" />
+    <file relUrl="Web.config" publishTime="07/30/2014 10:57:58" />
   </publishProfile>
 </publishData>

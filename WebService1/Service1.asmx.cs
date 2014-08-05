@@ -8,7 +8,7 @@ using System.Web.Script.Serialization;
 using System.Data.SqlClient;
 using System.Data;
 using Newtonsoft.Json;
-using System.Xml;   
+using System.Xml;
 
 namespace WebService1
 {
@@ -24,7 +24,9 @@ namespace WebService1
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
         public string getVacancyList()
         {
-            SqlDataAdapter da = new SqlDataAdapter("select ID,name from Vacancy", con);
+            SqlDataAdapter da = new SqlDataAdapter("SELECT Vacancy.ID, Vacancy.NAME, Vacancy.COUNT, VACANCY.COUNT_INF, COMPANY.NAME, DEPARTMENT.NAME, vacancyStatus.status " + 
+                                                       "FROM Vacancy LEFT JOIN COMPANY ON VACANCY.COMPANYID = COMPANY.ID LEFT JOIN DEPARTMENT on Vacancy.DEPARTMENTID = DEPARTMENT.ID " +
+                                                       "LEFT JOIN vacancyStatus on Vacancy.vacancyStatusId = vacancyStatus.id", con);
             DataTable dt = new DataTable();
             da.Fill(dt);
             string json = JsonConvert.SerializeObject(dt);
@@ -48,7 +50,8 @@ namespace WebService1
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
         public string getApplicantStatus(int applicantID)
         {
-            SqlDataAdapter da = new SqlDataAdapter("SELECT APPLICANT.NAME, vacancyStatus.status FROM APPLICANT LEFT JOIN vacancyStatus ON vacancyStatus.id = APPLICANT.Vac_Status_ID WHERE APPLICANT.ID = " + applicantID + " ORDER BY APPLICANT.NAME", con);
+            SqlDataAdapter da = new SqlDataAdapter("SELECT APPLICANT.NAME, vacancyStatus.status FROM APPLICANT LEFT JOIN vacancyStatus ON vacancyStatus.id = APPLICANT.Vac_Status_ID " +
+                                                       "WHERE APPLICANT.ID = " + applicantID + " ORDER BY APPLICANT.NAME", con);
             DataTable dt = new DataTable();
             da.Fill(dt);
             string json = JsonConvert.SerializeObject(dt);
@@ -71,14 +74,14 @@ namespace WebService1
                 SqlDataAdapter da = new SqlDataAdapter(str, con);
 
 
-       
+
                 da.Fill(dt);
                 json = JsonConvert.SerializeObject(dt);
             }
             catch (Exception e)
             {
             }
-            
+
             return json;
         }
 

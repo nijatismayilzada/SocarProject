@@ -13,7 +13,6 @@ import android.view.MenuItem;
 public class MainActivity extends Activity {
 
 	DatabaseHandler db = new DatabaseHandler(this);
-	DatabaseHandlerVacancies db2 = new DatabaseHandlerVacancies(this);
 	ArrayList vacancyList;
 
 	@Override
@@ -60,8 +59,9 @@ public class MainActivity extends Activity {
 				// Get map from asynctask
 				Map<String, String> vacancy = newTask.get().get(i);
 				// add it to the database
-				db2.addVacancy(new Vacancy(vacancy.get("ID"), vacancy
-						.get("name")));
+				db.addVacancy(new Vacancy(i, vacancy.get("number"), vacancy.get("vacancyName"),
+						vacancy.get("companyName"), vacancy.get("departmentName"),
+						vacancy.get("vacantCount"), vacancy.get("applicantCount"), vacancy.get("status")));
 			}// for
 
 		} catch (InterruptedException | ExecutionException e) {

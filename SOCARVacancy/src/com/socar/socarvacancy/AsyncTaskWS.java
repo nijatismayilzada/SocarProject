@@ -98,8 +98,13 @@ public class AsyncTaskWS extends AsyncTask<String, String, ArrayList<Map<String,
 				JSONArray array = new JSONArray(response);
 				for (int i = 0; i < array.length(); i++) {
 					JSONObject row = array.getJSONObject(i);
-					vacancy.put("ID", row.getString("ID"));
-					vacancy.put("name", row.getString("name"));
+					vacancy.put("number", row.getString("ID"));
+					vacancy.put("vacancyName", row.getString("NAME"));
+					vacancy.put("companyName", row.getString("NAME1"));
+					vacancy.put("departmentName", row.getString("NAME2"));
+					vacancy.put("vacantCount", row.getString("COUNT"));
+					vacancy.put("applicantCount", row.getString("COUNT_INF"));
+					vacancy.put("status", row.getString("status"));
 					vacancyList.add(vacancy);
 				}//for
 			} catch (Exception e) {
