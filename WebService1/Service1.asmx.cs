@@ -60,28 +60,14 @@ namespace WebService1
 
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
-        public string getLoginPassword(XmlDocument LoginNameUser, XmlDocument passwordUser)
+        public string getLoginPassword(String LoginNameUser, String passwordUser)
         {
-            string json = null;
-            try
-            {
-                DataTable dt = new DataTable();
-
-                String a = LoginNameUser.OuterXml;
-                String b = passwordUser.OuterXml;
-
-                string str = "SELECT count(id) as SuccessResult FROM Login WHERE LoginName = N'" + a + "' and Password = N'" + b + "'";
-                SqlDataAdapter da = new SqlDataAdapter(str, con);
-
-
-
-                da.Fill(dt);
-                json = JsonConvert.SerializeObject(dt);
-            }
-            catch (Exception e)
-            {
-            }
-
+            string str = "SELECT count(id) as SuccessResult FROM Login WHERE LoginName = N'" + LoginNameUser + "' and Password = N'" + passwordUser + "'";
+            
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(str, con);
+            da.Fill(dt);
+            string json = JsonConvert.SerializeObject(dt);
             return json;
         }
 

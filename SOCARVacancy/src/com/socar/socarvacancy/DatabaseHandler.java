@@ -19,7 +19,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String TABLE_VACANCY = "vacancy";
 	// 2 columns in the table
 	private static final String KEY_ID_LOGIN = "loginID";
-	private static final String KEY_LOGIN = "0or1";
+	private static final String KEY_LOGIN = "loginDetail";
 	//
 	private static final String KEY_ID_VACANCY = "vacID";
 	private static final String KEY_NAME_VACANCY = "vacName";
