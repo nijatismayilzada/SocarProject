@@ -14,5 +14,6 @@
     <string name="vacancy_title">Vacancies</string>
     <string name="logout">Logout</string>
     <string name="action_logout">Logout</string>
+    <string name="action_refresh">Refresh</string>
 
 </resources>

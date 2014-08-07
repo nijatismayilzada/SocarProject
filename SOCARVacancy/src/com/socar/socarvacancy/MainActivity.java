@@ -1,6 +1,8 @@
 package com.socar.socarvacancy;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -9,11 +11,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ExpandableListView;
 
 public class MainActivity extends Activity {
 
 	DatabaseHandler db = new DatabaseHandler(this);
 	ArrayList vacancyList;
+	ExpandableListAdapter listAdapter;
+	ExpandableListView expListView;
+	List<String> listDataHeader;
+	HashMap<String, List<String>> listDataChild;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,32 +51,34 @@ public class MainActivity extends Activity {
 			finish();
 		}
 
-		// Asynctask. Connection between asp.net web services and the machine
-		AsyncTaskWS newTask = new AsyncTaskWS(MainActivity.this,
-				"getVacancyList", getApplicationContext());
-		newTask.execute();
+		expListView = (ExpandableListView) findViewById(R.id.lvExp);
+		prepareListData();
 
-		try {
-			// Get vacancy list from asynctask
-			vacancyList = newTask.get();
-			// the number of vacancies
-			int noOfVacancies = vacancyList.size();
-			// add all vacancies to the database
-			for (int i = 0; i < noOfVacancies; i++) {
-				// Get map from asynctask
-				Map<String, String> vacancy = newTask.get().get(i);
-				// add it to the database
-				db.addVacancy(new Vacancy(i, vacancy.get("number"), vacancy.get("vacancyName"),
-						vacancy.get("companyName"), vacancy.get("departmentName"),
-						vacancy.get("vacantCount"), vacancy.get("applicantCount"), vacancy.get("status")));
-			}// for
+		listAdapter = new ExpandableListAdapter(this, listDataHeader,
+				listDataChild);
+		expListView.setAdapter(listAdapter);
+	}// onCreate
 
-		} catch (InterruptedException | ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	private void prepareListData() {
+		listDataHeader = new ArrayList<String>();
+		listDataChild = new HashMap<String, List<String>>();
+
+		List<Vacancy> allVacancies = db.getAllVacancy();
+		int count = allVacancies.size();
+		for (int i = 0; i < count; i++) {
+			String header = allVacancies.get(i).getNumber() + " "
+					+ allVacancies.get(i).getName();
+			listDataHeader.add(header);
+			List<String> children = new ArrayList<String>();
+			children.add(allVacancies.get(i).getCompany());
+			children.add(allVacancies.get(i).getDepartment());
+			children.add(allVacancies.get(i).getVacantCount());
+			children.add(allVacancies.get(i).getApplicantCount());
+			children.add(allVacancies.get(i).getVacancyStatus());
+			listDataChild.put(listDataHeader.get(i), children);
 		}
 
-	}// onCreate
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -91,9 +100,44 @@ public class MainActivity extends Activity {
 		case R.id.action_logout:
 			logout();
 			return true;
+		case R.id.action_refresh:
+			refresh();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	private void refresh() {
+		// Asynctask. Connection between asp.net web services and the machine
+		AsyncTaskWS newTask = new AsyncTaskWS(MainActivity.this,
+				"getVacancyList", getApplicationContext());
+		newTask.execute();
+
+		try {
+			// Get vacancy list from asynctask
+			vacancyList = newTask.get();
+			// the number of vacancies
+			int noOfVacancies = vacancyList.size();
+			// add all vacancies to the database
+			for (int i = 0; i < noOfVacancies; i++) {
+				// Get map from asynctask
+				Map<String, String> vacancy = newTask.get().get(i);
+				// add it to the database
+				db.addVacancy(new Vacancy(i, vacancy.get("number"), vacancy
+						.get("vacancyName"), vacancy.get("companyName"),
+						vacancy.get("departmentName"), vacancy
+								.get("vacantCount"), vacancy
+								.get("applicantCount"), vacancy.get("status")));
+			}// for
+
+		} catch (InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Intent restart = new Intent(getApplication(), MainActivity.class);
+		startActivity(restart);
+		finish();
 	}
 
 	// logout

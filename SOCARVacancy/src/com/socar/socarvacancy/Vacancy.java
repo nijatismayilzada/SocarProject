@@ -49,62 +49,63 @@ public class Vacancy {
 	public int getID() {
 		return this._vacId;
 	}
+
 	public void setID(int id) {
 		this._vacId = id;
 	}
 
-	
 	public String getName() {
 		return this._vacName;
 	}
+
 	public void setName(String name) {
 		this._vacName = name;
 	}
 
-	
 	public String getNumber() {
 		return this._vacNumber;
 	}
+
 	public void setNumber(String number) {
 		this._vacNumber = number;
 	}
 
-	
 	public String getCompany() {
 		return this._company;
 	}
+
 	public void setCompany(String company) {
 		this._company = company;
 	}
-	
-	
+
 	public String getDepartment() {
 		return this._department;
 	}
+
 	public void setDepartment(String department) {
 		this._department = department;
 	}
-	
-	
+
 	public String getVacantCount() {
 		return this._vacantCount;
 	}
+
 	public void setVacantCount(String vacantCount) {
 		this._vacantCount = vacantCount;
 	}
-	
-	
+
 	public String getApplicantCount() {
 		return this._applicantCount;
 	}
+
 	public void setApplicantCount(String applicantCount) {
 		this._applicantCount = applicantCount;
 	}
-	
-	
+
 	public String getVacancyStatus() {
 		return this._vacancyStatus;
 	}
+
 	public void setVacancyStatus(String vacancyStatus) {
 		this._vacancyStatus = vacancyStatus;
 	}
