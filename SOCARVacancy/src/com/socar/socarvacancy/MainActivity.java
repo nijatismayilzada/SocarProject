@@ -12,11 +12,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
 	DatabaseHandler db = new DatabaseHandler(this);
-	ArrayList vacancyList;
+	List<Map<String, String>> vacancyList;
 	ExpandableListAdapter listAdapter;
 	ExpandableListView expListView;
 	List<String> listDataHeader;
@@ -51,12 +52,17 @@ public class MainActivity extends Activity {
 			finish();
 		}
 
-		expListView = (ExpandableListView) findViewById(R.id.lvExp);
-		prepareListData();
+		try {
+			expListView = (ExpandableListView) findViewById(R.id.lvExp);
+			prepareListData();
+			listAdapter = new ExpandableListAdapter(this, listDataHeader,
+					listDataChild);
+			expListView.setAdapter(listAdapter);
+		} catch (Exception e) {
+			Toast.makeText(getBaseContext(), "Please refresh",
+					Toast.LENGTH_LONG).show();
+		}
 
-		listAdapter = new ExpandableListAdapter(this, listDataHeader,
-				listDataChild);
-		expListView.setAdapter(listAdapter);
 	}// onCreate
 
 	private void prepareListData() {
@@ -66,8 +72,8 @@ public class MainActivity extends Activity {
 		List<Vacancy> allVacancies = db.getAllVacancy();
 		int count = allVacancies.size();
 		for (int i = 0; i < count; i++) {
-			String header = allVacancies.get(i).getNumber() + " "
-					+ allVacancies.get(i).getName();
+			String header = allVacancies.get(i).getName() + " "
+					+ allVacancies.get(i).getNumber();
 			listDataHeader.add(header);
 			List<String> children = new ArrayList<String>();
 			children.add(allVacancies.get(i).getCompany());
@@ -94,9 +100,9 @@ public class MainActivity extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 
 		switch (item.getItemId()) {
-		case R.id.action_settings:
-			return true;
-			// logout
+		// case R.id.action_settings:
+		// return true;
+		// logout
 		case R.id.action_logout:
 			logout();
 			return true;
@@ -109,10 +115,12 @@ public class MainActivity extends Activity {
 	}
 
 	private void refresh() {
+		db.recrateTableVacancy();
 		// Asynctask. Connection between asp.net web services and the machine
 		AsyncTaskWS newTask = new AsyncTaskWS(MainActivity.this,
 				"getVacancyList", getApplicationContext());
 		newTask.execute();
+		String a = "";
 
 		try {
 			// Get vacancy list from asynctask
@@ -122,8 +130,10 @@ public class MainActivity extends Activity {
 			// add all vacancies to the database
 			for (int i = 0; i < noOfVacancies; i++) {
 				// Get map from asynctask
-				Map<String, String> vacancy = newTask.get().get(i);
+				Map<String, String> vacancy = (Map<String, String>) vacancyList
+						.get(i);
 				// add it to the database
+				a = vacancy.get("vacancyName");
 				db.addVacancy(new Vacancy(i, vacancy.get("number"), vacancy
 						.get("vacancyName"), vacancy.get("companyName"),
 						vacancy.get("departmentName"), vacancy
@@ -132,7 +142,6 @@ public class MainActivity extends Activity {
 			}// for
 
 		} catch (InterruptedException | ExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Intent restart = new Intent(getApplication(), MainActivity.class);

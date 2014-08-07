@@ -211,4 +211,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.close();
 	}
 
+	public void recrateTableVacancy() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_VACANCY);
+		String CREATE_VACANCY_TABLE = "CREATE TABLE " + TABLE_VACANCY + "("
+				+ KEY_ID_VACANCY + " INTEGER PRIMARY KEY," + KEY_NAME_VACANCY
+				+ " TEXT," + KEY_NUMBER_VACANCY + " TEXT,"
+				+ KEY_COMPANY_VACANCY + " TEXT," + KEY_DEPARTMENT_VACANCY
+				+ " TEXT," + KEY_VACANTCOUNT_VACANCY + " TEXT,"
+				+ KEY_APPLICANTCOUNT_VACANCY + " TEXT," + KEY_STATUS_VACANCY
+				+ " TEXT" + ")";
+		db.execSQL(CREATE_VACANCY_TABLE);
+	}
+
 }// Database handler
