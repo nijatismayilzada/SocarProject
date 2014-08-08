@@ -1003,14 +1003,15 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f050023;
         public static final int action_bar_title=0x7f050022;
         public static final int action_context_bar=0x7f05001d;
-        public static final int action_logout=0x7f050046;
+        public static final int action_logout=0x7f05004a;
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050024;
-        public static final int action_refresh=0x7f050047;
-        public static final int action_settings=0x7f050045;
+        public static final int action_refresh=0x7f05004b;
+        public static final int action_settings=0x7f050049;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int always=0x7f05000b;
+        public static final int applicants=0x7f050044;
         public static final int beginning=0x7f050011;
         public static final int checkbox=0x7f05002d;
         public static final int collapseActionView=0x7f05000d;
@@ -1028,10 +1029,11 @@ containing a value of this type.
         public static final int icon=0x7f05002a;
         public static final int ifRoom=0x7f05000a;
         public static final int image=0x7f050027;
-        public static final int lblListHeader=0x7f050043;
-        public static final int lblListItem=0x7f050044;
+        public static final int lblListHeader=0x7f050047;
+        public static final int lblListItem=0x7f050048;
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f050029;
+        public static final int listofvacancies=0x7f050046;
         public static final int loginButton=0x7f05003d;
         public static final int lvExp=0x7f050042;
         public static final int middle=0x7f050012;
@@ -1060,6 +1062,8 @@ containing a value of this type.
         public static final int split_action_bar=0x7f05001e;
         public static final int submit_area=0x7f050039;
         public static final int tabMode=0x7f050002;
+        public static final int tableRow1=0x7f050043;
+        public static final int tableRow2=0x7f050045;
         public static final int title=0x7f05002b;
         public static final int top_action_bar=0x7f050020;
         public static final int up=0x7f050021;
@@ -1120,9 +1124,10 @@ containing a value of this type.
         public static final int activity_applicant_list=0x7f030017;
         public static final int activity_login=0x7f030018;
         public static final int activity_main=0x7f030019;
-        public static final int list_group=0x7f03001a;
-        public static final int list_item=0x7f03001b;
-        public static final int support_simple_spinner_dropdown_item=0x7f03001c;
+        public static final int applicants=0x7f03001a;
+        public static final int list_group=0x7f03001b;
+        public static final int list_item=0x7f03001c;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001d;
     }
     public static final class menu {
         public static final int applicant_list=0x7f0c0000;
