@@ -148,14 +148,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				KEY_NAME_VACANCY, KEY_NUMBER_VACANCY, KEY_COMPANY_VACANCY,
 				KEY_DEPARTMENT_VACANCY, KEY_VACANTCOUNT_VACANCY,
 				KEY_APPLICANTCOUNT_VACANCY, KEY_STATUS_VACANCY },
-				KEY_ID_VACANCY + "=?", new String[] { String.valueOf(id) },
+				KEY_ID_VACANCY + "=?", new String[] { String.valueOf(id + 1) },
 				null, null, null, null);
 		// Reading
 		if (cursor != null)
 			cursor.moveToFirst();
 
 		Vacancy vacancy = new Vacancy(Integer.parseInt(cursor.getString(0)),
-				cursor.getString(1), cursor.getString(2));
+				cursor.getString(2), cursor.getString(1));
 		return vacancy;
 	}// getVacancy
 
@@ -172,8 +172,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			do {
 				Vacancy vacancy = new Vacancy();
 				vacancy.setID(Integer.parseInt(cursor.getString(0)));
-				vacancy.setName(cursor.getString(1));
-				vacancy.setNumber(cursor.getString(2));
+				vacancy.setName(cursor.getString(2));
+				vacancy.setNumber(cursor.getString(1));
 				vacancy.setCompany(cursor.getString(3));
 				vacancy.setDepartment(cursor.getString(4));
 				vacancy.setVacantCount(cursor.getString(5));

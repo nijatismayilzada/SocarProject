@@ -10,7 +10,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
@@ -63,6 +66,46 @@ public class MainActivity extends Activity {
 					Toast.LENGTH_LONG).show();
 		}
 
+		expListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				int itemType = ExpandableListView.getPackedPositionType(id);
+
+				int groupPosition;
+				int childPosition;
+				if (itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+					childPosition = ExpandableListView
+							.getPackedPositionChild(id);
+					groupPosition = ExpandableListView
+							.getPackedPositionGroup(id);
+
+					// do your per-item callback here
+					return true; // true if we consumed the click, false if not
+
+				} else if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+					groupPosition = ExpandableListView
+							.getPackedPositionGroup(id);
+
+					int vacancyID = Integer.parseInt(db.getVacancy(
+							groupPosition).getNumber());
+
+					// start login activity
+					Intent theIntent = new Intent(getApplication(),
+							ApplicantListActivity.class);
+					theIntent.putExtra("vacID", vacancyID);
+					startActivity(theIntent);
+					return true; // true if we consumed the click, false if not
+				} else {
+					Toast.makeText(getBaseContext(), "null", Toast.LENGTH_LONG)
+							.show();
+					// null item; we don't consume the click
+					return false;
+				}
+			}
+		});
+
 	}// onCreate
 
 	private void prepareListData() {
@@ -72,8 +115,8 @@ public class MainActivity extends Activity {
 		List<Vacancy> allVacancies = db.getAllVacancy();
 		int count = allVacancies.size();
 		for (int i = 0; i < count; i++) {
-			String header = allVacancies.get(i).getName() + " "
-					+ allVacancies.get(i).getNumber();
+			String header = allVacancies.get(i).getNumber() + " "
+					+ allVacancies.get(i).getName();
 			listDataHeader.add(header);
 			List<String> children = new ArrayList<String>();
 			children.add(allVacancies.get(i).getCompany());

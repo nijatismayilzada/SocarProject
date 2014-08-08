@@ -9,11 +9,11 @@
     <string name="password_textfield">******</string>
     <string name="login_button">Log in</string>
     <string name="title_activity_login">SOCAR Vacancy</string>
-
-    
     <string name="vacancy_title">Vacancies</string>
     <string name="logout">Logout</string>
     <string name="action_logout">Logout</string>
     <string name="action_refresh">Refresh</string>
+    <string name="title_activity_applicant_list">ApplicantListActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

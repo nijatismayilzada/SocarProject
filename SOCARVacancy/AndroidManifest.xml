@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="com.socar.socarvacancy.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,9 +24,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.socar.socarvacancy.LoginActivity"
+        <activity
+            android:name="com.socar.socarvacancy.LoginActivity"
             android:label="@string/title_activity_login" >
-            
+        </activity>
+        <activity
+            android:name="com.socar.socarvacancy.ApplicantListActivity"
+            android:label="@string/title_activity_applicant_list" >
         </activity>
     </application>
 
