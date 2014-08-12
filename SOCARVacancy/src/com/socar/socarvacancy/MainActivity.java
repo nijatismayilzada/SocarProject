@@ -159,24 +159,22 @@ public class MainActivity extends Activity {
 
 	private void refresh() {
 		db.recrateTableVacancy();
-		// Asynctask. Connection between asp.net web services and the machine
+		// AsyncTask. Connection between asp.net web services and the machine
 		AsyncTaskWS newTask = new AsyncTaskWS(MainActivity.this,
 				"getVacancyList", getApplicationContext());
 		newTask.execute();
-		String a = "";
 
 		try {
-			// Get vacancy list from asynctask
+			// Get vacancy list from AsyncTask
 			vacancyList = newTask.get();
 			// the number of vacancies
 			int noOfVacancies = vacancyList.size();
 			// add all vacancies to the database
 			for (int i = 0; i < noOfVacancies; i++) {
-				// Get map from asynctask
+				// Get map from AsyncTask
 				Map<String, String> vacancy = (Map<String, String>) vacancyList
 						.get(i);
 				// add it to the database
-				a = vacancy.get("vacancyName");
 				db.addVacancy(new Vacancy(i, vacancy.get("number"), vacancy
 						.get("vacancyName"), vacancy.get("companyName"),
 						vacancy.get("departmentName"), vacancy

@@ -37,7 +37,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				// Run asynctask
+				// Run AsyncTask
 				AsyncTaskWS newTask = new AsyncTaskWS(LoginActivity.this,
 						"getLoginPassword", getApplicationContext(), loginName
 								.getText().toString(), password.getText()

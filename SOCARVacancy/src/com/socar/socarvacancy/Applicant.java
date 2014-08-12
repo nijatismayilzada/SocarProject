@@ -8,12 +8,13 @@ public class Applicant
 	String _appFaname;
 	String _appEmail;
 	String _appSex;
+	String _appStatus;
 	
 	public Applicant()
 	{
 	}
 	
-	public Applicant(int id, String name, String surname, String faname, String email, String sex)
+	public Applicant(int id, String name, String surname, String faname, String email, String sex, String status)
 	{
 		this._appID = id;
 		this._appName = name;
@@ -21,6 +22,7 @@ public class Applicant
 		this._appFaname = faname;
 		this._appEmail = email;
 		this._appSex = sex;
+		this._appStatus = status;
 	}
 	
 	public int getID()
@@ -80,7 +82,17 @@ public class Applicant
 	
 	public void setSex(String Sex)
 	{
-		this._appName = Sex;
+		this._appSex = Sex;
+	}
+	
+	public String getAppStatus()
+	{
+		return this._appStatus;
+	}
+	
+	public void setAppStatus(String appStatus)
+	{
+		this._appStatus = appStatus;
 	}
 	
 	

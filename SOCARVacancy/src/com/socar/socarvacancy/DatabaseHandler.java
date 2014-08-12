@@ -17,7 +17,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String DATABASE_NAME = "vacancyAndroid";
 	private static final String TABLE_LOGIN = "login";
 	private static final String TABLE_VACANCY = "vacancy";
-	private static final String TABLE_APPLICANT= "applicant";
+	private static final String TABLE_APPLICANT = "applicant";
 	// 2 columns in the table
 	private static final String KEY_ID_LOGIN = "loginID";
 	private static final String KEY_LOGIN = "loginDetail";
@@ -38,6 +38,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_FANAME_APPLICANT = "appFaname";
 	private static final String KEY_EMAIL_APPLICANT = "appEmail";
 	private static final String KEY_SEX_APPLICANT = "appSex";
+	private static final String KEY_STATUS_APPLICANT = "appStatus";
 
 	// Constructor
 	public DatabaseHandler(Context context) {
@@ -61,13 +62,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_APPLICANTCOUNT_VACANCY + " TEXT," + KEY_STATUS_VACANCY
 				+ " TEXT" + ")";
 		db.execSQL(CREATE_VACANCY_TABLE);
-		
+
 		String CREATE_APPLICANT_TABLE = "CREATE TABLE " + TABLE_APPLICANT + "("
-				+ KEY_ID_APPLICANT + " INTEGER PRIMARY KEY," + KEY_NAME_APPLICANT
-				+ " TEXT," + KEY_SURNAME_APPLICANT + " TEXT,"
-				+ KEY_FANAME_APPLICANT + " TEXT," + KEY_EMAIL_APPLICANT
-				+ " TEXT," + KEY_SEX_APPLICANT + " TEXT,"
-				+ KEY_APPLICANTCOUNT_VACANCY +  " TEXT" + ")";
+				+ KEY_ID_APPLICANT + " INTEGER PRIMARY KEY,"
+				+ KEY_NAME_APPLICANT + " TEXT," + KEY_SURNAME_APPLICANT
+				+ " TEXT," + KEY_FANAME_APPLICANT + " TEXT,"
+				+ KEY_EMAIL_APPLICANT + " TEXT," + KEY_SEX_APPLICANT + " TEXT,"
+				+ KEY_APPLICANTCOUNT_VACANCY + " TEXT" + ")";
 		db.execSQL(CREATE_APPLICANT_TABLE);
 	}// onCreate
 
@@ -239,14 +240,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ " TEXT" + ")";
 		db.execSQL(CREATE_VACANCY_TABLE);
 	}
-	
-	
 
 	// =================================================================
-	
+
 	// Add applicant to the database
-	public void addApplicant(Applicant applicant) 
-	{
+	public void addApplicant(Applicant applicant) {
 		// open database
 		SQLiteDatabase db = this.getWritableDatabase();
 		// add new values
@@ -256,37 +254,36 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_FANAME_APPLICANT, applicant.getFaname());
 		values.put(KEY_EMAIL_APPLICANT, applicant.getEmail());
 		values.put(KEY_SEX_APPLICANT, applicant.getSex());
+		values.put(KEY_STATUS_APPLICANT, applicant.getAppStatus());
 		db.insert(TABLE_APPLICANT, null, values);
 		db.close();
 	}
-	
+
 	// Get applicant
-	public Applicant getApplicant(int id) 
-	{
+	public Applicant getApplicant(int id) {
 		// Open database
 		SQLiteDatabase db = this.getReadableDatabase();
 		// Android cursor for database reading
-		Cursor cursor = db.query(TABLE_APPLICANT, new String[] { KEY_ID_APPLICANT,
-				KEY_NAME_APPLICANT, KEY_SURNAME_APPLICANT, KEY_FANAME_APPLICANT,
-				KEY_EMAIL_APPLICANT, KEY_SEX_APPLICANT, },
+		Cursor cursor = db.query(TABLE_APPLICANT,
+				new String[] { KEY_ID_APPLICANT, KEY_NAME_APPLICANT,
+						KEY_SURNAME_APPLICANT, KEY_FANAME_APPLICANT,
+						KEY_EMAIL_APPLICANT, KEY_SEX_APPLICANT, KEY_STATUS_APPLICANT, },
 				KEY_ID_APPLICANT + "=?", new String[] { String.valueOf(id) },
 				null, null, null, null);
 		// Reading
 		if (cursor != null)
 			cursor.moveToFirst();
+        
+		Applicant applicant = new Applicant(Integer.parseInt(cursor
+				.getString(0)), cursor.getString(1), cursor.getString(2),
+				cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6));
 
-		Applicant applicant = new Applicant(Integer.parseInt(cursor.getString(0)),
-				cursor.getString(1), cursor.getString(2), cursor.getString(3),
-				cursor.getString(4), cursor.getString(5));
-		
 		return applicant;
-		
+
 	}// getApplicant
-	
-	
+
 	// Get all applicants
-	public List<Applicant> getAllApplicant() 
-	{
+	public List<Applicant> getAllApplicant() {
 		// create list for storing applicants
 		List<Applicant> applicantList = new ArrayList<Applicant>();
 		String selectQuery = "SELECT * FROM " + TABLE_APPLICANT;
@@ -294,10 +291,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 		// Read them and add to the list
-		if (cursor.moveToFirst()) 
-		{
-			do 
-			{
+		if (cursor.moveToFirst()) {
+			do {
+				String a = cursor.getString(1);
 				Applicant applicant = new Applicant();
 				applicant.setID(Integer.parseInt(cursor.getString(0)));
 				applicant.setName(cursor.getString(1));
@@ -305,16 +301,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				applicant.setFaname(cursor.getString(3));
 				applicant.setEmail(cursor.getString(4));
 				applicant.setSex(cursor.getString(5));
+				applicant.setAppStatus(cursor.getString(6));
 				applicantList.add(applicant);
 			} while (cursor.moveToNext());
 		}
 		return applicantList;
 	}
-	
-	
+
 	// update applicant
-	public int updateApplicant(Applicant applicant) 
-	{
+	public int updateApplicant(Applicant applicant) {
 		// open database and read
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -324,34 +319,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_FANAME_APPLICANT, applicant.getFaname());
 		values.put(KEY_EMAIL_APPLICANT, applicant.getEmail());
 		values.put(KEY_SEX_APPLICANT, applicant.getSex());
+		values.put(KEY_STATUS_APPLICANT, applicant.getAppStatus());
 		// select the row and update
 		return db.update(TABLE_APPLICANT, values, KEY_ID_APPLICANT + " = ?",
 				new String[] { String.valueOf(applicant.getID()) });
 	}
-	
-	// delete applicant
-		public void deleteApplicant(Applicant applicant) 
-		{
-			SQLiteDatabase db = this.getWritableDatabase();
-			db.delete(TABLE_APPLICANT, KEY_ID_APPLICANT + " = ?",
-					new String[] { String.valueOf(applicant.getID()) });
-			db.close();
-		}
 
-		public void recrateTableApplicant() 
-		{
-			SQLiteDatabase db = this.getWritableDatabase();
-			db.execSQL("DROP TABLE IF EXISTS " + TABLE_APPLICANT);
-			String CREATE_VACANCY_TABLE = "CREATE TABLE " + TABLE_APPLICANT + "("
-					+ KEY_ID_APPLICANT + " INTEGER PRIMARY KEY," + KEY_NAME_APPLICANT
-					+ " TEXT," + KEY_SURNAME_APPLICANT + " TEXT,"
-					+ KEY_FANAME_APPLICANT + " TEXT," + KEY_EMAIL_APPLICANT
-					+ " TEXT," + KEY_SEX_APPLICANT + " TEXT" + ")";
-			db.execSQL(CREATE_VACANCY_TABLE);
-		}
-	
-	
-	
-		
+	// delete applicant
+	public void deleteApplicant(Applicant applicant) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_APPLICANT, KEY_ID_APPLICANT + " = ?",
+				new String[] { String.valueOf(applicant.getID()) });
+		db.close();
+	}
+
+	public void recrateTableApplicant() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_APPLICANT);
+		String CREATE_APPLICANT_TABLE = "CREATE TABLE " + TABLE_APPLICANT + "("
+				+ KEY_ID_APPLICANT + " INTEGER PRIMARY KEY,"
+				+ KEY_NAME_APPLICANT + " TEXT," + KEY_SURNAME_APPLICANT
+				+ " TEXT," + KEY_FANAME_APPLICANT + " TEXT,"
+				+ KEY_EMAIL_APPLICANT + " TEXT," + KEY_SEX_APPLICANT + " TEXT, " +
+				KEY_STATUS_APPLICANT + " TEXT"
+				+ ")";
+		db.execSQL(CREATE_APPLICANT_TABLE);
+	}
 
 }// Database handler
