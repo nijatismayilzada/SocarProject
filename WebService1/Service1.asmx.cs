@@ -48,10 +48,14 @@ namespace WebService1
 
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
-        public string getApplicantStatus(int applicantID)
+        public string getApplicantStatus(int applicantID, int vacID)
         {
-            SqlDataAdapter da = new SqlDataAdapter("SELECT APPLICANT.NAME, vacancyStatus.status FROM APPLICANT LEFT JOIN vacancyStatus ON vacancyStatus.id = APPLICANT.Vac_Status_ID " +
-                                                       "WHERE APPLICANT.ID = " + applicantID + " ORDER BY APPLICANT.NAME", con);
+            SqlDataAdapter da = new SqlDataAdapter("select resultType.result ,appSel.APPID, appSel.selectionState_id from "+
+            " applicantSelection appSel LEFT JOIN (select id, result from resultType where type in (0,1)) resultType " +
+            " ON resultType.id = appSel.selectionState_id  where appSel.VACID = " + vacID + " AND appSel.APPID = " + applicantID, con);
+
+
+            
             DataTable dt = new DataTable();
             da.Fill(dt);
             string json = JsonConvert.SerializeObject(dt);
@@ -71,6 +75,32 @@ namespace WebService1
             return json;
         }
 
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public string getAllFailReasons()
+        {
+            string str = "select * from failreason";
 
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(str, con);
+            da.Fill(dt);
+            string json = JsonConvert.SerializeObject(dt);
+            return json;
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public string getApplicantFailReasons(int vacID, int applicantID)
+        {
+            string str = "select * from failreason LEFT JOIN (select * from applicantFailReason where vacid = " + vacID +
+                         ") appFailReason ON appFailReason.failreason_id = failreason.id " +
+                         " where appFailReason.appid = " + applicantID;
+
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(str, con);
+            da.Fill(dt);
+            string json = JsonConvert.SerializeObject(dt);
+            return json;
+        }
     }
 }

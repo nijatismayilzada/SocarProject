@@ -44,3 +44,8 @@ C:\Users\Nijat\Documents\GitHub\socarProject\WebService1\bin\WebService1.pdb
 C:\Users\Nijat\Documents\GitHub\socarProject\WebService1\obj\Debug\WebService1.csprojResolveAssemblyReference.cache
 C:\Users\Nijat\Documents\GitHub\socarProject\WebService1\obj\Debug\WebService1.dll
 C:\Users\Nijat\Documents\GitHub\socarProject\WebService1\obj\Debug\WebService1.pdb
+C:\Users\Fizuli\Documents\GitHub\socarProject\WebService1\bin\WebService1.dll
+C:\Users\Fizuli\Documents\GitHub\socarProject\WebService1\bin\WebService1.pdb
+C:\Users\Fizuli\Documents\GitHub\socarProject\WebService1\obj\Debug\WebService1.csprojResolveAssemblyReference.cache
+C:\Users\Fizuli\Documents\GitHub\socarProject\WebService1\obj\Debug\WebService1.dll
+C:\Users\Fizuli\Documents\GitHub\socarProject\WebService1\obj\Debug\WebService1.pdb
