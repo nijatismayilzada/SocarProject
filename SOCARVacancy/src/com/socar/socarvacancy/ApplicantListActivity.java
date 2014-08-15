@@ -65,8 +65,6 @@ public class ApplicantListActivity extends Activity {
 				children.add("Male");
 			else
 				children.add("Female");
-			children.add(allApplicants.get(i).getAppStatus());
-
 			listDataChild.put(listDataHeader.get(i), children);
 		}
 
@@ -107,7 +105,10 @@ public class ApplicantListActivity extends Activity {
 		AsyncTaskWS newTask = new AsyncTaskWS(ApplicantListActivity.this,
 				"getApplicants", getApplicationContext(), vacID);
 		newTask.execute();
-
+		
+		AsyncTaskWS newTask2 = new AsyncTaskWS(ApplicantListActivity.this, "getApplicantStatus", getApplicationContext(), vacID);
+		newTask2.execute();
+		
 		try {
 			// Get vacancy list from AsyncTask
 			applicantList = newTask.get();
@@ -121,8 +122,7 @@ public class ApplicantListActivity extends Activity {
 
 				db.addApplicant(new Applicant(i, applicant.get("name"),
 						applicant.get("surname"), applicant.get("faname"),
-						applicant.get("email"), applicant.get("sex"), applicant
-								.get("vacStatusID")));
+						applicant.get("email"), applicant.get("sex")));
 			}// for
 
 		} catch (InterruptedException | ExecutionException e) {

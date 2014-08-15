@@ -38,7 +38,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_FANAME_APPLICANT = "appFaname";
 	private static final String KEY_EMAIL_APPLICANT = "appEmail";
 	private static final String KEY_SEX_APPLICANT = "appSex";
-	private static final String KEY_STATUS_APPLICANT = "appStatus";
 
 	// Constructor
 	public DatabaseHandler(Context context) {
@@ -67,8 +66,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_ID_APPLICANT + " INTEGER PRIMARY KEY,"
 				+ KEY_NAME_APPLICANT + " TEXT," + KEY_SURNAME_APPLICANT
 				+ " TEXT," + KEY_FANAME_APPLICANT + " TEXT,"
-				+ KEY_EMAIL_APPLICANT + " TEXT," + KEY_SEX_APPLICANT + " TEXT,"
-				+ KEY_APPLICANTCOUNT_VACANCY + " TEXT" + ")";
+				+ KEY_EMAIL_APPLICANT + " TEXT," + KEY_SEX_APPLICANT + " TEXT" + ")";
 		db.execSQL(CREATE_APPLICANT_TABLE);
 	}// onCreate
 
@@ -254,7 +252,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_FANAME_APPLICANT, applicant.getFaname());
 		values.put(KEY_EMAIL_APPLICANT, applicant.getEmail());
 		values.put(KEY_SEX_APPLICANT, applicant.getSex());
-		values.put(KEY_STATUS_APPLICANT, applicant.getAppStatus());
 		db.insert(TABLE_APPLICANT, null, values);
 		db.close();
 	}
@@ -267,7 +264,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		Cursor cursor = db.query(TABLE_APPLICANT,
 				new String[] { KEY_ID_APPLICANT, KEY_NAME_APPLICANT,
 						KEY_SURNAME_APPLICANT, KEY_FANAME_APPLICANT,
-						KEY_EMAIL_APPLICANT, KEY_SEX_APPLICANT, KEY_STATUS_APPLICANT, },
+						KEY_EMAIL_APPLICANT, KEY_SEX_APPLICANT, },
 				KEY_ID_APPLICANT + "=?", new String[] { String.valueOf(id) },
 				null, null, null, null);
 		// Reading
@@ -276,7 +273,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         
 		Applicant applicant = new Applicant(Integer.parseInt(cursor
 				.getString(0)), cursor.getString(1), cursor.getString(2),
-				cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6));
+				cursor.getString(3), cursor.getString(4), cursor.getString(5));
 
 		return applicant;
 
@@ -301,7 +298,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				applicant.setFaname(cursor.getString(3));
 				applicant.setEmail(cursor.getString(4));
 				applicant.setSex(cursor.getString(5));
-				applicant.setAppStatus(cursor.getString(6));
 				applicantList.add(applicant);
 			} while (cursor.moveToNext());
 		}
@@ -319,7 +315,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_FANAME_APPLICANT, applicant.getFaname());
 		values.put(KEY_EMAIL_APPLICANT, applicant.getEmail());
 		values.put(KEY_SEX_APPLICANT, applicant.getSex());
-		values.put(KEY_STATUS_APPLICANT, applicant.getAppStatus());
 		// select the row and update
 		return db.update(TABLE_APPLICANT, values, KEY_ID_APPLICANT + " = ?",
 				new String[] { String.valueOf(applicant.getID()) });
@@ -340,8 +335,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_ID_APPLICANT + " INTEGER PRIMARY KEY,"
 				+ KEY_NAME_APPLICANT + " TEXT," + KEY_SURNAME_APPLICANT
 				+ " TEXT," + KEY_FANAME_APPLICANT + " TEXT,"
-				+ KEY_EMAIL_APPLICANT + " TEXT," + KEY_SEX_APPLICANT + " TEXT, " +
-				KEY_STATUS_APPLICANT + " TEXT"
+				+ KEY_EMAIL_APPLICANT + " TEXT," + KEY_SEX_APPLICANT + " TEXT "
 				+ ")";
 		db.execSQL(CREATE_APPLICANT_TABLE);
 	}
