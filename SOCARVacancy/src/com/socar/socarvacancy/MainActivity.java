@@ -55,16 +55,11 @@ public class MainActivity extends Activity {
 			finish();
 		}
 
-		try {
-			expListView = (ExpandableListView) findViewById(R.id.lvExp);
-			prepareListData();
-			listAdapter = new ExpandableListAdapter(this, listDataHeader,
-					listDataChild);
-			expListView.setAdapter(listAdapter);
-		} catch (Exception e) {
-			Toast.makeText(getBaseContext(), "Please refresh",
-					Toast.LENGTH_LONG).show();
-		}
+		expListView = (ExpandableListView) findViewById(R.id.lvExp);
+		prepareListData();
+		listAdapter = new ExpandableListAdapter(this, listDataHeader,
+				listDataChild);
+		expListView.setAdapter(listAdapter);
 
 		expListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
@@ -114,6 +109,11 @@ public class MainActivity extends Activity {
 
 		List<Vacancy> allVacancies = db.getAllVacancy();
 		int count = allVacancies.size();
+		if (count == 0) {
+			remakeDB();
+			allVacancies = db.getAllVacancy();
+			count = allVacancies.size();
+		}
 		for (int i = 0; i < count; i++) {
 			String header = allVacancies.get(i).getNumber() + " "
 					+ allVacancies.get(i).getName();
@@ -188,6 +188,36 @@ public class MainActivity extends Activity {
 		Intent restart = new Intent(getApplication(), MainActivity.class);
 		startActivity(restart);
 		finish();
+	}
+
+	private void remakeDB() {
+		db.recrateTableVacancy();
+		// AsyncTask. Connection between asp.net web services and the machine
+		AsyncTaskWS newTask = new AsyncTaskWS(MainActivity.this,
+				"getVacancyList", getApplicationContext());
+		newTask.execute();
+
+		try {
+			// Get vacancy list from AsyncTask
+			vacancyList = newTask.get();
+			// the number of vacancies
+			int noOfVacancies = vacancyList.size();
+			// add all vacancies to the database
+			for (int i = 0; i < noOfVacancies; i++) {
+				// Get map from AsyncTask
+				Map<String, String> vacancy = (Map<String, String>) vacancyList
+						.get(i);
+				// add it to the database
+				db.addVacancy(new Vacancy(i, vacancy.get("number"), vacancy
+						.get("vacancyName"), vacancy.get("companyName"),
+						vacancy.get("departmentName"), vacancy
+								.get("vacantCount"), vacancy
+								.get("applicantCount"), vacancy.get("status")));
+			}// for
+
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// logout

@@ -36,22 +36,17 @@ public class ApplicantListActivity extends Activity {
 		// Toast.makeText(getBaseContext(), "" + vacID,
 		// Toast.LENGTH_LONG).show();
 
-		try {
-			expListView = (ExpandableListView) findViewById(R.id.lvExp1);
-			prepareListData();
-			listAdapter = new ExpandableListAdapterApplicant(this,
-					listDataHeader, listDataChild);
-			expListView.setAdapter(listAdapter);
-
-		} catch (Exception e) {
-			refresh();
-		}
+		expListView = (ExpandableListView) findViewById(R.id.lvExp1);
+		prepareListData();
+		listAdapter = new ExpandableListAdapterApplicant(this, listDataHeader,
+				listDataChild);
+		expListView.setAdapter(listAdapter);
 	}
 
 	private void prepareListData() {
 		listDataHeader = new ArrayList<String>();
 		listDataChild = new HashMap<String, List<String>>();
-
+		remakeDB();
 		List<Applicant> allApplicants = db.getAllApplicant();
 		int count = allApplicants.size();
 		for (int i = 0; i < count; i++) {
@@ -105,10 +100,11 @@ public class ApplicantListActivity extends Activity {
 		AsyncTaskWS newTask = new AsyncTaskWS(ApplicantListActivity.this,
 				"getApplicants", getApplicationContext(), vacID);
 		newTask.execute();
-		
-		AsyncTaskWS newTask2 = new AsyncTaskWS(ApplicantListActivity.this, "getApplicantStatus", getApplicationContext(), vacID);
+
+		AsyncTaskWS newTask2 = new AsyncTaskWS(ApplicantListActivity.this,
+				"getApplicantStatus", getApplicationContext(), vacID);
 		newTask2.execute();
-		
+
 		try {
 			// Get vacancy list from AsyncTask
 			applicantList = newTask.get();
@@ -132,6 +128,38 @@ public class ApplicantListActivity extends Activity {
 				ApplicantListActivity.class);
 		startActivity(restart);
 		finish();
+	}
+
+	private void remakeDB() {
+		db.recrateTableApplicant();
+		// AsyncTask. Connection between asp.net web services and the machine
+		AsyncTaskWS newTask = new AsyncTaskWS(ApplicantListActivity.this,
+				"getApplicants", getApplicationContext(), vacID);
+		newTask.execute();
+
+		AsyncTaskWS newTask2 = new AsyncTaskWS(ApplicantListActivity.this,
+				"getApplicantStatus", getApplicationContext(), vacID);
+		newTask2.execute();
+
+		try {
+			// Get vacancy list from AsyncTask
+			applicantList = newTask.get();
+			// the number of vacancies
+			int noOfApplicants = applicantList.size();
+			// add all vacancies to the database
+			for (int i = 0; i < noOfApplicants; i++) {
+				// Get map from AsyncTask
+				Map<String, String> applicant = (Map<String, String>) applicantList
+						.get(i);
+
+				db.addApplicant(new Applicant(i, applicant.get("name"),
+						applicant.get("surname"), applicant.get("faname"),
+						applicant.get("email"), applicant.get("sex")));
+			}// for
+
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// logout
