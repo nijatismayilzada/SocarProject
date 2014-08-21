@@ -39,6 +39,7 @@ public class AsyncTaskWS extends
 	ArrayList<Map<String, String>> getAllFailReasonsList = new ArrayList<Map<String, String>>();
 	ArrayList<Map<String, String>> getApplicantFailReasonsList = new ArrayList<Map<String, String>>();
 
+	@SuppressWarnings("unused")
 	private Activity activity;
 	private String method;
 	private String value1;
@@ -259,8 +260,8 @@ public class AsyncTaskWS extends
 				for (int i = 0; i < array.length(); i++) {
 					Map<String, String> getApplicantsMap = new HashMap<String, String>();
 					JSONObject row = array.getJSONObject(i);
-					getApplicantsMap.put("id", row.getString("ID"));
 					getApplicantsMap.put("name", row.getString("NAME"));
+					getApplicantsMap.put("number", row.getString("ID"));
 					getApplicantsMap.put("surname", row.getString("SURNAME"));
 					getApplicantsMap.put("faname", row.getString("FANAME"));
 					getApplicantsMap.put("sex", row.getString("SEX"));

@@ -1,13 +1,11 @@
 //Database handler for Login
 package com.socar.socarvacancy;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -36,6 +34,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	//
 	private static final String KEY_ID_APPLICANT = "appID";
 	private static final String KEY_NAME_APPLICANT = "appName";
+	private static final String KEY_NUMBER_APPLICANT = "appNumber";
 	private static final String KEY_SURNAME_APPLICANT = "appSurname";
 	private static final String KEY_FANAME_APPLICANT = "appFaname";
 	private static final String KEY_EMAIL_APPLICANT = "appEmail";
@@ -66,9 +65,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		String CREATE_APPLICANT_TABLE = "CREATE TABLE " + TABLE_APPLICANT + "("
 				+ KEY_ID_APPLICANT + " INTEGER PRIMARY KEY,"
-				+ KEY_NAME_APPLICANT + " TEXT," + KEY_SURNAME_APPLICANT
-				+ " TEXT," + KEY_FANAME_APPLICANT + " TEXT,"
-				+ KEY_EMAIL_APPLICANT + " TEXT," + KEY_SEX_APPLICANT + " TEXT" + ")";
+				+ KEY_NAME_APPLICANT + " TEXT," + KEY_NUMBER_APPLICANT
+				+ " TEXT," + KEY_SURNAME_APPLICANT + " TEXT,"
+				+ KEY_FANAME_APPLICANT + " TEXT," + KEY_EMAIL_APPLICANT
+				+ " TEXT," + KEY_SEX_APPLICANT + " TEXT" + ")";
 		db.execSQL(CREATE_APPLICANT_TABLE);
 	}// onCreate
 
@@ -189,8 +189,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			do {
 				Vacancy vacancy = new Vacancy();
 				vacancy.setID(Integer.parseInt(cursor.getString(0)));
-				vacancy.setName(cursor.getString(2));
 				vacancy.setNumber(cursor.getString(1));
+				vacancy.setName(cursor.getString(2));
 				vacancy.setCompany(cursor.getString(3));
 				vacancy.setDepartment(cursor.getString(4));
 				vacancy.setVacantCount(cursor.getString(5));
@@ -250,6 +250,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// add new values
 		ContentValues values = new ContentValues();
 		values.put(KEY_NAME_APPLICANT, applicant.getName());
+		values.put(KEY_NUMBER_APPLICANT, applicant.getNumber());
 		values.put(KEY_SURNAME_APPLICANT, applicant.getSurname());
 		values.put(KEY_FANAME_APPLICANT, applicant.getFaname());
 		values.put(KEY_EMAIL_APPLICANT, applicant.getEmail());
@@ -263,19 +264,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// Open database
 		SQLiteDatabase db = this.getReadableDatabase();
 		// Android cursor for database reading
-		Cursor cursor = db.query(TABLE_APPLICANT,
-				new String[] { KEY_ID_APPLICANT, KEY_NAME_APPLICANT,
-						KEY_SURNAME_APPLICANT, KEY_FANAME_APPLICANT,
-						KEY_EMAIL_APPLICANT, KEY_SEX_APPLICANT, },
-				KEY_ID_APPLICANT + "=?", new String[] { String.valueOf(id) },
-				null, null, null, null);
+		Cursor cursor = db.query(TABLE_APPLICANT, new String[] {
+				KEY_ID_APPLICANT, KEY_NAME_APPLICANT, KEY_NUMBER_APPLICANT,
+				KEY_SURNAME_APPLICANT, KEY_FANAME_APPLICANT,
+				KEY_EMAIL_APPLICANT, KEY_SEX_APPLICANT, }, KEY_ID_APPLICANT
+				+ "=?", new String[] { String.valueOf(id) }, null, null, null,
+				null);
 		// Reading
 		if (cursor != null)
 			cursor.moveToFirst();
-        
+
 		Applicant applicant = new Applicant(Integer.parseInt(cursor
 				.getString(0)), cursor.getString(1), cursor.getString(2),
-				cursor.getString(3), cursor.getString(4), cursor.getString(5));
+				cursor.getString(3), cursor.getString(4), cursor.getString(5),
+				cursor.getString(6));
 
 		return applicant;
 
@@ -295,10 +297,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				Applicant applicant = new Applicant();
 				applicant.setID(Integer.parseInt(cursor.getString(0)));
 				applicant.setName(cursor.getString(1));
-				applicant.setSurname(cursor.getString(2));
-				applicant.setFaname(cursor.getString(3));
-				applicant.setEmail(cursor.getString(4));
-				applicant.setSex(cursor.getString(5));
+				applicant.setNumber(cursor.getString(2));
+				applicant.setSurname(cursor.getString(3));
+				applicant.setFaname(cursor.getString(4));
+				applicant.setEmail(cursor.getString(5));
+				applicant.setSex(cursor.getString(6));
 				applicantList.add(applicant);
 			} while (cursor.moveToNext());
 		}
@@ -312,6 +315,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		// add updated values
 		values.put(KEY_NAME_APPLICANT, applicant.getName());
+		values.put(KEY_NUMBER_APPLICANT, applicant.getName());
 		values.put(KEY_SURNAME_APPLICANT, applicant.getSurname());
 		values.put(KEY_FANAME_APPLICANT, applicant.getFaname());
 		values.put(KEY_EMAIL_APPLICANT, applicant.getEmail());
@@ -334,10 +338,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_APPLICANT);
 		String CREATE_APPLICANT_TABLE = "CREATE TABLE " + TABLE_APPLICANT + "("
 				+ KEY_ID_APPLICANT + " INTEGER PRIMARY KEY,"
-				+ KEY_NAME_APPLICANT + " TEXT," + KEY_SURNAME_APPLICANT
-				+ " TEXT," + KEY_FANAME_APPLICANT + " TEXT,"
-				+ KEY_EMAIL_APPLICANT + " TEXT," + KEY_SEX_APPLICANT + " TEXT "
-				+ ")";
+				+ KEY_NAME_APPLICANT + " TEXT," + KEY_NUMBER_APPLICANT
+				+ " TEXT," + KEY_SURNAME_APPLICANT + " TEXT,"
+				+ KEY_FANAME_APPLICANT + " TEXT," + KEY_EMAIL_APPLICANT
+				+ " TEXT," + KEY_SEX_APPLICANT + " TEXT " + ")";
 		db.execSQL(CREATE_APPLICANT_TABLE);
 	}
 

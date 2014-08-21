@@ -11,7 +11,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 public class ApplicantListActivity extends Activity {
 
@@ -41,6 +45,62 @@ public class ApplicantListActivity extends Activity {
 		listAdapter = new ExpandableListAdapterApplicant(this, listDataHeader,
 				listDataChild);
 		expListView.setAdapter(listAdapter);
+		expListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				int itemType = ExpandableListView.getPackedPositionType(id);
+
+				int groupPosition;
+				@SuppressWarnings("unused")
+				int childPosition;
+				if (itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+					childPosition = ExpandableListView
+							.getPackedPositionChild(id);
+					groupPosition = ExpandableListView
+							.getPackedPositionGroup(id);
+
+					// do your per-item callback here
+					return true; // true if we consumed the click, false if not
+
+				} else if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+					groupPosition = ExpandableListView
+							.getPackedPositionGroup(id);
+
+					int applicantID = Integer.parseInt(db.getApplicant(
+							groupPosition).getNumber());
+					String appName = db.getApplicant(
+							groupPosition).getName();
+					String appSurname = db.getApplicant(
+							groupPosition).getSurname();
+					String appFaname = db.getApplicant(
+							groupPosition).getFaname();
+					String appEmail = db.getApplicant(
+							groupPosition).getEmail();
+					String appSex = db.getApplicant(
+							groupPosition).getSex();
+
+					// start login activity
+					Intent theIntent = new Intent(getApplication(),
+							ApplicantDetailActivity.class);
+					theIntent.putExtra("vacID", vacID);
+					theIntent.putExtra("appName", appName);
+					theIntent.putExtra("appID", applicantID);
+					theIntent.putExtra("appSurname", appSurname);
+					theIntent.putExtra("appFaname", appFaname);
+					theIntent.putExtra("appEmail", appEmail);
+					theIntent.putExtra("appSex", appSex);
+					startActivity(theIntent);
+					return true; // true if we consumed the click, false if not
+				} else {
+					Toast.makeText(getBaseContext(), "null", Toast.LENGTH_LONG)
+							.show();
+					// null item; we don't consume the click
+					return false;
+				}
+			}
+		});
 	}
 
 	private void prepareListData() {
@@ -54,6 +114,7 @@ public class ApplicantListActivity extends Activity {
 					+ allApplicants.get(i).getSurname();
 			listDataHeader.add(header);
 			List<String> children = new ArrayList<String>();
+			children.add(allApplicants.get(i).getNumber());
 			children.add(allApplicants.get(i).getFaname());
 			children.add(allApplicants.get(i).getEmail());
 			if (allApplicants.get(i).getSex().equals("0"))
@@ -101,10 +162,6 @@ public class ApplicantListActivity extends Activity {
 				"getApplicants", getApplicationContext(), vacID);
 		newTask.execute();
 
-		AsyncTaskWS newTask2 = new AsyncTaskWS(ApplicantListActivity.this,
-				"getApplicantStatus", getApplicationContext(), vacID);
-		newTask2.execute();
-
 		try {
 			// Get vacancy list from AsyncTask
 			applicantList = newTask.get();
@@ -117,8 +174,9 @@ public class ApplicantListActivity extends Activity {
 						.get(i);
 
 				db.addApplicant(new Applicant(i, applicant.get("name"),
-						applicant.get("surname"), applicant.get("faname"),
-						applicant.get("email"), applicant.get("sex")));
+						applicant.get("number"), applicant.get("surname"),
+						applicant.get("faname"), applicant.get("email"),
+						applicant.get("sex")));
 			}// for
 
 		} catch (InterruptedException | ExecutionException e) {
@@ -153,8 +211,9 @@ public class ApplicantListActivity extends Activity {
 						.get(i);
 
 				db.addApplicant(new Applicant(i, applicant.get("name"),
-						applicant.get("surname"), applicant.get("faname"),
-						applicant.get("email"), applicant.get("sex")));
+						applicant.get("number"), applicant.get("surname"),
+						applicant.get("faname"), applicant.get("email"),
+						applicant.get("sex")));
 			}// for
 
 		} catch (InterruptedException | ExecutionException e) {

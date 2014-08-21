@@ -69,6 +69,7 @@ public class MainActivity extends Activity {
 				int itemType = ExpandableListView.getPackedPositionType(id);
 
 				int groupPosition;
+				@SuppressWarnings("unused")
 				int childPosition;
 				if (itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
 					childPosition = ExpandableListView

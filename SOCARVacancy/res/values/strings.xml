@@ -15,5 +15,10 @@
     <string name="action_refresh">Refresh</string>
     <string name="title_activity_applicant_list">Applicants</string>
     <string name="title_activity_applicant_detail">Applicant Details</string>
+    <string name="textview_applicant_name">Name</string>
+    <string name="textview_applicant_surname">Surname</string>
+    <string name="textview_applicant_faname">Faname</string>
+    <string name="textview_applicant_email">Email</string>
+    <string name="textview_applicant_sex">Sex</string>
 
 </resources>
