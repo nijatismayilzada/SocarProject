@@ -82,9 +82,9 @@ public class ApplicantListActivity extends Activity {
 							groupPosition).getSex();
 
 					// start login activity
-					Intent theIntent = new Intent(getApplication(),
+					Intent theIntent = new Intent(ApplicantListActivity.this,
 							ApplicantDetailActivity.class);
-					theIntent.putExtra("vacID", vacID);
+					theIntent.putExtra("vacancyID", vacID);
 					theIntent.putExtra("appName", appName);
 					theIntent.putExtra("appID", applicantID);
 					theIntent.putExtra("appSurname", appSurname);
@@ -140,17 +140,13 @@ public class ApplicantListActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 
-		switch (item.getItemId()) {
-		// case R.id.action_settings:
-		// return true;
-		// logout
-		case R.id.action_logout1:
+		if (item.getItemId() == R.id.action_logout1) {
 			logout();
 			return true;
-		case R.id.action_refresh1:
+		} else if (item.getItemId() == R.id.action_refresh1) {
 			refresh();
 			return true;
-		default:
+		} else {
 			return super.onOptionsItemSelected(item);
 		}
 	}
@@ -194,10 +190,6 @@ public class ApplicantListActivity extends Activity {
 		AsyncTaskWS newTask = new AsyncTaskWS(ApplicantListActivity.this,
 				"getApplicants", getApplicationContext(), vacID);
 		newTask.execute();
-
-		AsyncTaskWS newTask2 = new AsyncTaskWS(ApplicantListActivity.this,
-				"getApplicantStatus", getApplicationContext(), vacID);
-		newTask2.execute();
 
 		try {
 			// Get vacancy list from AsyncTask

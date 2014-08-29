@@ -143,17 +143,13 @@ public class MainActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 
-		switch (item.getItemId()) {
-		// case R.id.action_settings:
-		// return true;
-		// logout
-		case R.id.action_logout:
+		if (item.getItemId() == R.id.action_logout) {
 			logout();
 			return true;
-		case R.id.action_refresh:
+		} else if (item.getItemId() == R.id.action_refresh) {
 			refresh();
 			return true;
-		default:
+		} else {
 			return super.onOptionsItemSelected(item);
 		}
 	}

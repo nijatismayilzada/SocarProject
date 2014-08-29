@@ -268,8 +268,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				KEY_ID_APPLICANT, KEY_NAME_APPLICANT, KEY_NUMBER_APPLICANT,
 				KEY_SURNAME_APPLICANT, KEY_FANAME_APPLICANT,
 				KEY_EMAIL_APPLICANT, KEY_SEX_APPLICANT, }, KEY_ID_APPLICANT
-				+ "=?", new String[] { String.valueOf(id) }, null, null, null,
-				null);
+				+ "=?", new String[] { String.valueOf(id + 1) }, null, null,
+				null, null);
 		// Reading
 		if (cursor != null)
 			cursor.moveToFirst();

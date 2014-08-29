@@ -11,6 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:padding="@dimen/padding_3dp"
         android:text="@string/textview_applicant_name"
@@ -22,6 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/textViewName"
         android:padding="@dimen/padding_3dp"
         android:text="@string/textview_applicant_surname"
@@ -33,6 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/textViewSurname"
         android:padding="@dimen/padding_3dp"
         android:text="@string/textview_applicant_faname"
@@ -44,6 +50,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/textViewEmail"
         android:padding="@dimen/padding_3dp"
         android:text="@string/textview_applicant_sex"
@@ -54,17 +62,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/textViewSex" />
-
-    <ListView
-        android:id="@+id/reasonListView"
-        android:layout_width="match_parent"
-        android:layout_height="213dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/statusSpinner" >
-
-    </ListView>
 
     <TextView
         android:id="@+id/textViewEmail"
@@ -72,9 +73,24 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/textViewFaname"
         android:padding="@dimen/padding_3dp"
         android:text="@string/textview_applicant_email"
         android:textSize="20sp" />
+
+    <ListView
+        android:id="@+id/reasonListView"
+        android:layout_width="match_parent"
+        android:layout_height="213dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/statusSpinner" >
+
+    </ListView>
 
 </RelativeLayout>
